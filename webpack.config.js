@@ -44,5 +44,6 @@ module.exports = {
   plugins: [htmlPlugin, hotModulePlugin],
   devServer: {
     hot: true,
+    historyApiFallback: true,
   },
 }
