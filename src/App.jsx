@@ -6,6 +6,8 @@ import AppStyles from './styles/components/App.scss'
 import Candidates from './pages/Candidates.jsx'
 import Vote from './pages/Vote.jsx'
 import Winners from './pages/Winners.jsx'
+import Login from './pages/Login.jsx'
+import { SessionContext } from './services/session'
 
 class App extends React.Component {
   render() {
@@ -18,12 +20,39 @@ class App extends React.Component {
               <li>
                 <Link to="/candidates">Candidates</Link>
               </li>
-              <li>
-                <Link to="/vote">Vote</Link>
-              </li>
+              <SessionContext.Consumer>
+                {context => {
+                  if (context.loggedIn) {
+                    return (
+                      <li>
+                        <Link to="/vote">Vote</Link>
+                      </li>
+                    )
+                  }
+                }}
+              </SessionContext.Consumer>
               <li>
                 <Link to="/winners">Winners</Link>
               </li>
+              <SessionContext.Consumer>
+                {context => {
+                  if (context.loggedIn) {
+                    return (
+                      <li>
+                        <Link to="#" onClick={context.forgetCode}>
+                          Log out
+                        </Link>
+                      </li>
+                    )
+                  } else {
+                    return (
+                      <li>
+                        <Link to="/login">Log in</Link>
+                      </li>
+                    )
+                  }
+                }}
+              </SessionContext.Consumer>
             </ul>
           </nav>
         </header>
@@ -31,6 +60,7 @@ class App extends React.Component {
           <Route path="/candidates" exact component={Candidates} />
           <Route path="/vote" exact component={Vote} />
           <Route path="/winners" exact component={Winners} />
+          <Route path="/login" exact component={Login} />
         </div>
         <footer id={AppStyles['footer']}>
           <p>Simple Contest</p>
