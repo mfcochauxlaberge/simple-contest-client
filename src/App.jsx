@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, Route } from 'react-router-dom'
 
-import AppStyles from './styles/components/App.scss'
+import AppStyles from './styles/pages/App.scss'
 
 import Candidates from './pages/Candidates.jsx'
 import Vote from './pages/Vote.jsx'

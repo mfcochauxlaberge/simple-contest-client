@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 
 import { SessionContext } from '../services/session'
 
-import '../styles/components/Login.scss'
+import '../styles/pages/Login.scss'
 
 class Login extends React.Component {
   constructor(props) {
