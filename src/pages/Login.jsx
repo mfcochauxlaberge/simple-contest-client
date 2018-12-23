@@ -56,7 +56,7 @@ class Login extends React.Component {
 
   login = ctx => event => {
     event.preventDefault()
-    ctx.verifyCode({ code })
+    ctx.verifyCode({ code: this.state.code })
   }
 }
 

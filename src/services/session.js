@@ -8,7 +8,7 @@ class SessionProvider extends Component {
 
     this.state = {
       loggedIn: false,
-      claims: {},
+      isAdmin: {},
     }
   }
 
@@ -17,22 +17,36 @@ class SessionProvider extends Component {
       <SessionContext.Provider
         value={{
           loggedIn: this.state.loggedIn,
-          claims: this.state.claims,
+          isAdmin: this.state.isAdmin,
 
           verifyCode: ({ code }) => {
-            this.setState(() => {
-              return {
-                loggedIn: true,
-                claims: { code },
-              }
-            })
+            fetch(`http://localhost:8081/codes/${code}`)
+              .then(data => data.json())
+              .then(body => {
+                if (body['error']) {
+                  throw body['error']
+                }
+
+                this.setState({
+                  loggedIn: true,
+                  code: body.code.code,
+                  isAdmin: body.code.admin,
+                })
+              })
+              .catch(err => {
+                this.setState({
+                  loggedIn: false,
+                  code: '',
+                  isAdmin: false,
+                })
+              })
           },
 
           forgetCode: () => {
             this.setState(() => {
               return {
                 loggedIn: false,
-                claims: {},
+                isAdmin: false,
               }
             })
           },
