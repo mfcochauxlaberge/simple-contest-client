@@ -1,21 +1,41 @@
 import React from 'react'
 
-// import AppStyles from './styles/components/App.scss'
+import CandidateCard from '../components/CandidateCard.jsx'
 
 class Candidates extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      candidates: [],
+    }
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:8081/candidates')
+      .then(data => data.json())
+      .then(body => {
+        this.setState({
+          candidates: body['candidates'],
+        })
+      })
+      .catch(err => {
+        console.log('Error while fetching candidates:', err)
+      })
+  }
+
   render() {
     return (
       <React.Fragment>
         <h2>Candidates</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </p>
+        {this.state.candidates.length === 0 && <p>No candidates.</p>}
+        {this.state.candidates.length > 0 && (
+          <React.Fragment>
+            {this.state.candidates.map(candidate => {
+              return <CandidateCard key={candidate.id} candidate={candidate} />
+            })}
+          </React.Fragment>
+        )}
       </React.Fragment>
     )
   }
